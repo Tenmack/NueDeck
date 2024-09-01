@@ -10,17 +10,20 @@ namespace NueGames.NueDeck.Scripts.Characters
         public StatusType StatusType { get; set; }
         public int StatusValue { get; set; }
         public bool DecreaseOverTurn { get; set; } // If true, decrease on turn end
+        
+        public int AmountToDecreaseOverTurn { get; set; } //new amount of decreased status value for convenience not to write same methods
         public bool IsPermanent { get; set; } // If true, status can not be cleared during combat
         public bool IsActive { get; set; }
         public bool CanNegativeStack { get; set; }
         public bool ClearAtNextTurn { get; set; }
         
         public Action OnTriggerAction;
-        public StatusStats(StatusType statusType,int statusValue,bool decreaseOverTurn = false, bool isPermanent = false,bool isActive = false,bool canNegativeStack = false,bool clearAtNextTurn = false)
+        public StatusStats(StatusType statusType, int statusValue, bool decreaseOverTurn = false, int amountToDecreaseOverTurn = 1,  bool isPermanent = false,bool isActive = false,bool canNegativeStack = false,bool clearAtNextTurn = false)
         {
             StatusType = statusType;
             StatusValue = statusValue;
             DecreaseOverTurn = decreaseOverTurn;
+            AmountToDecreaseOverTurn = amountToDecreaseOverTurn; //a base amount is 1, but can be edited
             IsPermanent = isPermanent;
             IsActive = isActive;
             CanNegativeStack = canNegativeStack;
@@ -73,7 +76,11 @@ namespace NueGames.NueDeck.Scripts.Characters
             
             StatusDict[StatusType.Stun].DecreaseOverTurn = true;
             StatusDict[StatusType.Stun].OnTriggerAction += CheckStunStatus;
-            
+
+            StatusDict[StatusType.Gassed].DecreaseOverTurn = true;
+            StatusDict[StatusType.Gassed].AmountToDecreaseOverTurn = 2;
+            StatusDict[StatusType.Gassed].OnTriggerAction += DamageGassed; // new gassed status logic
+
         }
         #endregion
         
@@ -194,9 +201,9 @@ namespace NueGames.NueDeck.Scripts.Characters
             }
             
             if (StatusDict[targetStatus].DecreaseOverTurn) 
-                StatusDict[targetStatus].StatusValue--;
+                StatusDict[targetStatus].StatusValue -= StatusDict[targetStatus].AmountToDecreaseOverTurn;
             
-            if (StatusDict[targetStatus].StatusValue == 0)
+            if (StatusDict[targetStatus].StatusValue <= 0)
                 if (!StatusDict[targetStatus].IsPermanent)
                     ClearStatus(targetStatus);
             
@@ -208,6 +215,12 @@ namespace NueGames.NueDeck.Scripts.Characters
         {
             if (StatusDict[StatusType.Poison].StatusValue<=0) return;
             Damage(StatusDict[StatusType.Poison].StatusValue,true);
+        }
+
+        private void DamageGassed()
+        {
+            if (StatusDict[StatusType.Gassed].StatusValue <= 0) return;
+            Damage(StatusDict[StatusType.Gassed].StatusValue, true);
         }
         
         public void CheckStunStatus()

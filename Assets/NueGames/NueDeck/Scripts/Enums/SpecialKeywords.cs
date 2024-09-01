@@ -7,6 +7,7 @@
         Poison,
         Exhaust,
         Dexterity,
-        Stun
+        Stun,
+        Gassed //new keyword for the test task
     }
 }

@@ -26,3 +26,6 @@ MonoBehaviour:
       for this combat
   - specialKeyword: 5
     contentText: Can not use any action
+  - specialKeyword: 6
+    contentText: "<color=green>\u201CGassed\u201D</color> decreases by -2 with each
+      turn of the opponent."

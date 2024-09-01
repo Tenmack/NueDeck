@@ -27,7 +27,7 @@ namespace NueGames.NueDeck.Scripts.Card
         private void OnChoice()
         {
             if (GameManager != null)
-                GameManager.PersistentGameplayData.CurrentCardsList.Add(_cardBase.CardData);
+                GameManager.PersistentGameplayData.CurrentCardsList.Add(Instantiate(_cardBase.CardData)); //edited to assign a temporary instance for applying temporary effects
 
             if (UIManager != null)
                 UIManager.RewardCanvas.ChoicePanel.DisablePanel();

@@ -308,12 +308,36 @@ namespace NueGames.NueDeck.Editor
                     EditorGUILayout.Separator();
                     var newActionType = (CardActionType)EditorGUILayout.EnumPopup("Action Type",cardActionData.CardActionType,GUILayout.Width(250));
 
-                    if (newActionType != CardActionType.Exhaust)
+                    if (newActionType != CardActionType.Exhaust && newActionType != CardActionType.CardDeckActionImproveValue && newActionType != CardActionType.CreateCardsByName)
                     {
                         var newActionTarget = (ActionTargetType)EditorGUILayout.EnumPopup("Target Type",cardActionData.ActionTargetType,GUILayout.Width(250));
                         var newActionValue = EditorGUILayout.FloatField("Action Value: ",cardActionData.ActionValue);
                         cardActionData.EditActionValue(newActionValue);
                         cardActionData.EditActionTarget(newActionTarget);
+                    }
+
+                    else if (newActionType == CardActionType.CardDeckActionImproveValue) //added some UI specifically for card action type
+                    {
+                        var newTargetActionType = (CardActionType)EditorGUILayout.EnumPopup("Card Action Type Target", cardActionData.CardActionTypeTarget, GUILayout.Width(250));
+                        var newActionValue = EditorGUILayout.FloatField("Action Value: ", cardActionData.ActionValue);
+                        cardActionData.EditActionValue(newActionValue);
+                        cardActionData.EditActionTypeTarget(newTargetActionType);
+                    }
+
+                    else if (newActionType == CardActionType.CreateCardsByName)
+                    {
+                        var newNameTarget = (string)EditorGUILayout.TextField("Name Target: ", cardActionData.TargetName);
+                        cardActionData.EditTargetName(newNameTarget);
+                        var newActionValue = EditorGUILayout.FloatField("Action Value: ", cardActionData.ActionValue);
+                        cardActionData.EditActionValue(newActionValue);
+                    }
+
+                    if (newActionType == CardActionType.CardNameImproveValue)
+                    {
+                        var newTargetActionType = (CardActionType)EditorGUILayout.EnumPopup("Card Action Type Target", cardActionData.CardActionTypeTarget, GUILayout.Width(250));
+                        var newNameTarget = (string)EditorGUILayout.TextField("Name Target: ", cardActionData.TargetName);
+                        cardActionData.EditTargetName(newNameTarget);
+                        cardActionData.EditActionTypeTarget(newTargetActionType);
                     }
                     
                     var newActionDelay = EditorGUILayout.FloatField("Action Delay: ",cardActionData.ActionDelay);
@@ -508,6 +532,7 @@ namespace NueGames.NueDeck.Editor
             SelectedCardData.EditCardName(CardName);
             SelectedCardData.EditManaCost(ManaCost);
             SelectedCardData.EditCardSprite(CardSprite);
+            SelectedCardData.EditRarity(CardRarity); //corrected because in the start version it wasn't there
             SelectedCardData.EditUsableWithoutTarget(UsableWithoutTarget);
             SelectedCardData.EditExhaustAfterPlay(ExhaustAfterPlay);
             SelectedCardData.EditCardActionDataList(CardActionDataList);

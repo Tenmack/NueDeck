@@ -89,27 +89,39 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
     public class CardActionData
     {
         [SerializeField] private CardActionType cardActionType;
+        [SerializeField] private CardActionType cardActionTypeTarget; //new variable for actions targeted to manipulate with cards in the deck with actions
         [SerializeField] private ActionTargetType actionTargetType;
         [SerializeField] private float actionValue;
+        [SerializeField] private string targetName;
         [SerializeField] private float actionDelay;
 
         public ActionTargetType ActionTargetType => actionTargetType;
         public CardActionType CardActionType => cardActionType;
+        public CardActionType CardActionTypeTarget => cardActionTypeTarget;
         public float ActionValue => actionValue;
+        public string TargetName => targetName;
         public float ActionDelay => actionDelay;
 
-        #region Editor
-
+        #region Editor Methods
 #if UNITY_EDITOR
         public void EditActionType(CardActionType newType) =>  cardActionType = newType;
+
+        public void EditActionTypeTarget(CardActionType newType) => cardActionTypeTarget = newType;
         public void EditActionTarget(ActionTargetType newTargetType) => actionTargetType = newTargetType;
         public void EditActionValue(float newValue) => actionValue = newValue;
+
+        public void EditTargetName(string newName) => targetName = newName;
         public void EditActionDelay(float newValue) => actionDelay = newValue;
 
 #endif
 
-
         #endregion
+        public void ModifyActionType(CardActionType newType) => cardActionType = newType;
+        public void ModifyActionTarget(ActionTargetType newTargetType) => actionTargetType = newTargetType;
+        public void ModifyActionValue(float newValue) => actionValue = newValue; //for new card actions
+
+        public void ModifyActionDelay(float newValue) => actionDelay = newValue;
+
     }
 
     [Serializable]

@@ -71,10 +71,10 @@ namespace NueGames.NueDeck.Scripts.Managers
             
             if (PersistentGameplayData.IsRandomHand)
                 for (var i = 0; i < GameplayData.RandomCardCount; i++)
-                    PersistentGameplayData.CurrentCardsList.Add(GameplayData.AllCardsList.RandomItem());
+                    PersistentGameplayData.CurrentCardsList.Add(Instantiate(GameplayData.AllCardsList.RandomItem())); //edited to assign a temporary instance for applying temporary effects
             else
                 foreach (var cardData in GameplayData.InitalDeck.CardList)
-                    PersistentGameplayData.CurrentCardsList.Add(cardData);
+                    PersistentGameplayData.CurrentCardsList.Add(Instantiate(cardData));//edited to assign a temporary instance for applying temporary effects
         }
         public void NextEncounter()
         {

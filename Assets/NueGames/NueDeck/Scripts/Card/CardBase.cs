@@ -88,8 +88,8 @@ namespace NueGames.NueDeck.Scripts.Card
 
                 foreach (var target in targetList)
                     CardActionProcessor.GetAction(playerAction.CardActionType)
-                        .DoAction(new CardActionParameters(playerAction.ActionValue,
-                            target,self,CardData,this));
+                        .DoAction(new CardActionParameters(playerAction.ActionValue, playerAction.TargetName, playerAction.CardActionTypeTarget, //added cardActionTypeTarget
+                            target,self,CardData,this, playerAction));
             }
             CollectionManager.OnCardPlayed(this);
         }
